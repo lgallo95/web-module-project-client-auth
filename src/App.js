@@ -1,39 +1,44 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
-import Login from './components/Login'
-import FriendsList from './components/FriendsList'
 
+import { BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom';
+
+import PrivateRoute from './components/PrivateRoute';
+
+import Login from './components/Login';
+import AddFriends from './components/AddFriends';
+import FriendsList from './components/FriendsList';
+import Logout from './components/Logout';
 function App() {
-  // const [isLoggedIn, setLogin] = useState(false);
-  // const isLoggedIn = localStorage.getItem("token");
-
   return (
     <Router>
-      <div className="App">
+    <div className="App">
+      <header>
+        <h2>My Friend's List</h2>
         <ul>
           <li>
             <Link to="/login">Login</Link>
           </li>
           <li>
-            <Link to="/logout">Logout</Link>
-          </li>
-          {/* <li>
-            { (isLoggedIn && localStorage.getItem("role") === "admin") && <Link to="/protected">Admin</Link>}
+            <Link to="/friends">Friends List</Link>
           </li>
           <li>
-            {isLoggedIn && <Link to="/protected">Protected Page</Link>}
+            <Link to="/friends/add">Add a Friend</Link>
           </li>
-          <div>
-            {isLoggedIn && <p>Welcome {localStorage.getItem('username')}</p>}
-          </div> */}
+          <li>
+          <Link to="/logout">Log Out</Link>
+          </li>
         </ul>
-        <Switch>
-          <Route path="/" component={Login} />
-          <Route path="/Login" component={Login} />
-          <Route path="/FriendsList" component={FriendsList}/>    
-        </Switch>
-      </div>
+      </header>
+
+      <Switch>
+        <Route path="/login" component={Login} />
+        <PrivateRoute exact path="/friends" component={FriendsList} />
+        <PrivateRoute exact path="/friends/add" component={AddFriends} />
+        <Route path="/logout" component={Logout} />
+        <Route path="/" component={Login} />
+      </Switch>
+    </div>
     </Router>
   );
 }

@@ -3,47 +3,49 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 class Login extends React.Component {
-    state = {
-        credentials: {
-          username: '',
-          password: ''
-        }
-      };
-  
-      handleChange = e => {
-        this.setState({
-          credentials: {
-            ...this.state.credentials,
-            [e.target.name]: e.target.value
-          }
-        });
-      };
+  state = {
+    credentials: {
+      username: '',
+      password: ''
+    }
+  };
 
-      login = e => {
-        e.preventDefault();
-        axios.post('http://localhost:9000/api/login', this.state.credentials)
-          .then(resp=> {
-            const { token, role, username } = resp.data;
-            localStorage.setItem("token", token);
-            localStorage.setItem("role", role);
-            localStorage.setItem("username", username);
-            this.props.history.push('/FriendsList');
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      };
+  handleChange = e => {
+    this.setState({
+      credentials: {
+        ...this.state.credentials,
+        [e.target.name]: e.target.value
+      }
+    });
+  };
 
-    render() {
+  login = e => {
+    e.preventDefault();
+    axios.post('http://localhost:9000/api/login', this.state.credentials)
+      .then(resp=> {
+        const { token } = resp.data;
+        localStorage.setItem("token", token);
+        this.props.history.push('/friends');
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  };
+
+  render() {
+    console.log(this.state.credentials)
     return (
       <div>
+        <h1> Log In Here </h1>
         <form onSubmit={this.login}>
+        <label> Username: </label>
           <input
             type="text"
             name="username"
             value={this.state.credentials.username}
             onChange={this.handleChange}
           />
+          <label> Password: </label>
           <input
             type="password"
             name="password"
@@ -56,4 +58,5 @@ class Login extends React.Component {
     );
   }
 }
+
 export default Login;
